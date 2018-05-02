@@ -21,6 +21,8 @@
 #include "RegisterFile_01.h"
 #include "ALUSimulator.h"
 
+enum Function_Code (NOOP_SLL = 0, ADD = 20, ADDU = 21, SUB = 22, SUBU = 23, AND = 24, OR = 25, XOR = 26);
+enum Op_Code(Non_I_Type = 0, ADDI = 8, ADDIU = 9, STLI = 10, STLIU = 11);
 extern void ALUSimulator( RegisterFile theRegisterFile,
 				uint32_t OpCode,
 				uint32_t Rs, uint32_t Rt, uint32_t Rd,
