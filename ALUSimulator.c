@@ -79,6 +79,7 @@ extern void ALUSimulator(RegisterFile theRegisterFile, uint32_t OpCode,
     // Cast RsVal to signed int32_t and ImmediateValue to signed int16_t
     // Add those together and save them to RdVal
     RdVal = ((int32_t)RsVal + (int16_t)ImmediateValue);
+    //Write RdVal to register Rt
     RegisterFile_Write(theRegisterFile, true, Rt, RdVal);
     return;
     break;
@@ -87,6 +88,7 @@ extern void ALUSimulator(RegisterFile theRegisterFile, uint32_t OpCode,
     // Cast ImmediateValue to signed int16_t
     // Add that to RsVal and save the result to RdVal
     RdVal = (RsVal + (int16_t)ImmediateValue);
+    //Write RdVal to register Rt
     RegisterFile_Write(theRegisterFile, true, Rt, RdVal);
     return;
     break;
@@ -95,6 +97,7 @@ extern void ALUSimulator(RegisterFile theRegisterFile, uint32_t OpCode,
     // Cast RsVal to signed int32_t and ImmediateValue to signed int16_t
     // Use a ternary statement to set the value of RdVal
     RdVal = ((int32_t)RsVal < (int16_t)ImmediateValue ? 1 : 0);
+    //Write RdVal to register Rt
     RegisterFile_Write(theRegisterFile, true, Rt, RdVal);
     return;
     break;
@@ -103,6 +106,7 @@ extern void ALUSimulator(RegisterFile theRegisterFile, uint32_t OpCode,
     // Cast ImmediateValue to signed int16_t
     // Use a ternary statement to set the value of RdVal
     RdVal = (RsVal < (int16_t)ImmediateValue ? 1 : 0);
+    //Write RdVal to register Rt
     RegisterFile_Write(theRegisterFile, true, Rt, RdVal);
     return;
     break;
