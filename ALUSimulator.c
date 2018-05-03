@@ -29,7 +29,7 @@ enum Function_Code {NOOP_SLL = 0b000000, SRL = 0b000010, SRA = 0b000011,
  AND = 0b100100, OR = 0b100101, XOR = 0b100110, SLT = 0b101010, SLTU = 0b101011};
 
 //Enumerate the OP codes for ease of understanding
-enum Op_Code{Non_I_Type = 0, ADDI = 8, ADDIU = 9, SLTI = 10, SLTIU = 11};
+enum Op_Code{Non_I_Type = 0b000000, ADDI = 0b001000, ADDIU = 0b001001, SLTI = 0b001010, SLTIU = 001011};
 
 extern void ALUSimulator( RegisterFile theRegisterFile,
 				uint32_t OpCode,
@@ -65,6 +65,7 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 		//Fall through to ADDIU since both cases perform the same
 		case ADDIU:
 		RdVal = (RsVal + ImmediateValue);
+		RegisterFile_Write(theRegisterFile, true, Rt, RdVal);
 		break;
 		case SLTI:
 		case SLTIU:
