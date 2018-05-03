@@ -49,12 +49,22 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 				ShiftAmt,
 				FunctionCode,
 				ImmediateValue );
+
+	//Create two pointers that will be used to access the register
+	uint32_t RsVal = 0;
+	uint32_t RtVal = 0;
+
+	//Create an it to hold the value to be written to the register
+	uint32_t RdVal = 0;
+	//Access the register at the given addresses
+	RegisterFile_Read(theRegisterFile, Rs, &RsVal, Rt, &RtVal);
 				
 	switch(OpCode)
 	{
 		case ADDI:
 		//Fall through to ADDIU since both cases perform the same
 		case ADDIU:
+		RdVal = (RsVal + ImmediateValue);
 		break;
 		case STLI:
 		break;
@@ -64,14 +74,19 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 		switch(FunctionCode)
 		{
 			case NOOP_SLL:
+			RdVal = RsVal << ShiftAmt;
 			break;
 			case SRL:
+			RdVal = RsVal >> ShiftAmt;
 			break;
 			case SRA:
+			RdVal = RsVal >> ShiftAmt;
 			break;
 			case SLLV:
+			RdVal = RtVal << RsVal;
 			break;
 			case SRLV:
+			RdVal = RtVal >> RsVal;
 			break;
 			case MFHI:
 			break;
@@ -80,24 +95,33 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 			case MULT:
 			//Fall through to MULTU since both cases perform the same
 			case MULTU:
+			RdVal = RsVal * RtVal;
 			break;
 			case DIV:
 			//Fall through to DIVU since both cases perform the same
 			case DIVU:
+			RegisterFile_Write(theRegisterFile, true, 0b011110, RsVal % RtVal);
+			RegisterFile_Write(theRegisterFile, true, 0b011111, RsVal / RtVal);
+			return;
 			break;
 			case ADD:
 			//Fall through to ADDU since both cases perform the same
 			case ADDU:
+			RdVal = RsVal + RtVal;
 			break;
 			case SUB:
 			//Fall through to SUBU since both cases perform the same
 			case SUBU:
+			RdVal = RsVal - RtVal;
 			break;
 			case AND:
+			RdVal = RsVal & RtVal;
 			break;
 			case OR:
+			RdVal = RsVal | RtVal;
 			break;
 			case XOR:
+			RdVal = RsVal ^ RtVal;
 			break;
 			case SLT:
 			break;
@@ -106,4 +130,5 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 		}
 		break;
 	}
+	RegisterFile_Write(theRegisterFile, true, Rd, RdVal);
 }
