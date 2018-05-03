@@ -24,12 +24,12 @@
 //Enumerate the function codes for ease of understanding
 enum Function_Code {NOOP_SLL = 0b000000, SRL = 0b000010, SRA = 0b000011,
  SLLV = 0b000100, SRLV = 0b000110, MFHI = 0b010000, MFLO = 0b010010,
- MULT = 0b011000, MULTU = 0b011001, DIV = 0b011011, DIVU = 0b011011,
+ MULT = 0b011000, MULTU = 0b011001, DIV = 0b011010, DIVU = 0b011011,
  ADD = 0b100000, ADDU = 0b100001, SUB = 0b100010, SUBU = 0b100011,
  AND = 0b100100, OR = 0b100101, XOR = 0b100110, SLT = 0b101010, SLTU = 0b101011};
 
 //Enumerate the OP codes for ease of understanding
-enum Op_Code(Non_I_Type = 0, ADDI = 8, ADDIU = 9, STLI = 10, STLIU = 11);
+enum Op_Code{Non_I_Type = 0, ADDI = 8, ADDIU = 9, STLI = 10, STLIU = 11};
 
 extern void ALUSimulator( RegisterFile theRegisterFile,
 				uint32_t OpCode,
@@ -50,4 +50,60 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 				FunctionCode,
 				ImmediateValue );
 				
+	switch(OpCode)
+	{
+		case ADDI:
+		//Fall through to ADDIU since both cases perform the same
+		case ADDIU:
+		break;
+		case STLI:
+		break;
+		case STLIU:
+		break;
+		case Non_I_Type:
+		switch(FunctionCode)
+		{
+			case NOOP_SLL:
+			break;
+			case SRL:
+			break;
+			case SRA:
+			break;
+			case SLLV:
+			break;
+			case SRLV:
+			break;
+			case MFHI:
+			break;
+			case MFLO:
+			break;
+			case MULT:
+			//Fall through to MULTU since both cases perform the same
+			case MULTU:
+			break;
+			case DIV:
+			//Fall through to DIVU since both cases perform the same
+			case DIVU:
+			break;
+			case ADD:
+			//Fall through to ADDU since both cases perform the same
+			case ADDU:
+			break;
+			case SUB:
+			//Fall through to SUBU since both cases perform the same
+			case SUBU:
+			break;
+			case AND:
+			break;
+			case OR:
+			break;
+			case XOR:
+			break;
+			case SLT:
+			break;
+			case SLTU:
+			break;
+		}
+		break;
+	}
 }
