@@ -21,6 +21,8 @@
 #include "RegisterFile_01.h"
 #include "ALUSimulator.h"
 
+#define WORDSIZE 32
+
 //Enumerate the function codes for ease of understanding
 enum Function_Code {NOOP_SLL = 0b000000, SRL = 0b000010, SRA = 0b000011,
  SLLV = 0b000100, SRLV = 0b000110, MFHI = 0b010000, MFLO = 0b010010,
@@ -101,7 +103,18 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 			case MULT:
 			//Fall through to MULTU since both cases perform the same
 			case MULTU:
-			RdVal = RsVal * RtVal;
+			//Multiply the values together and get the full value
+			uint64_t fullMult = RsVal * RtVal;
+			//Create a mask that is WORDSIZE number of digits
+			uint32_t mask = (1 << WORDSIZE) - 1;
+			//Grab the first WORDSIZE digits from the multiplication
+			uint32_t lowVal = fullMult & mask;
+			//Grab the last WORDSIZE digits from the multiplication
+			uint32_t highVal = (fullMult >> WORDSIZE) & mask;
+			//Write lowVal and highVal to the low and high registers respectively
+			RegisterFile_Write(theRegisterFile, true, 0b011110, lowVal);
+			RegisterFile_Write(theRegisterFile, true, 0b011111, highVal);
+			return;
 			break;
 			case DIV:
 			//Fall through to DIVU since both cases perform the same
