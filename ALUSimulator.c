@@ -194,7 +194,7 @@ extern void ALUSimulator(RegisterFile theRegisterFile, uint32_t OpCode,
     case DIVU:
       // Write the remainder of the division of Rs and Rt to the low Register
       RegisterFile_Write(theRegisterFile, true, 0b011110, RsVal % RtVal);
-      // Write the quotient of the division of Rs and Rt to the hight Register
+      // Write the quotient of the division of Rs and Rt to the high Register
       RegisterFile_Write(theRegisterFile, true, 0b011111, RsVal / RtVal);
       return;
       break;
