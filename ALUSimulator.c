@@ -29,7 +29,7 @@ enum Function_Code {NOOP_SLL = 0b000000, SRL = 0b000010, SRA = 0b000011,
  AND = 0b100100, OR = 0b100101, XOR = 0b100110, SLT = 0b101010, SLTU = 0b101011};
 
 //Enumerate the OP codes for ease of understanding
-enum Op_Code{Non_I_Type = 0, ADDI = 8, ADDIU = 9, STLI = 10, STLIU = 11};
+enum Op_Code{Non_I_Type = 0, ADDI = 8, ADDIU = 9, SLTI = 10, SLTIU = 11};
 
 extern void ALUSimulator( RegisterFile theRegisterFile,
 				uint32_t OpCode,
@@ -66,9 +66,10 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 		case ADDIU:
 		RdVal = (RsVal + ImmediateValue);
 		break;
-		case STLI:
-		break;
-		case STLIU:
+		case SLTI:
+		case SLTIU:
+		RdVal = (RsVal < ImmediateValue ? 1 : 0);
+		RegisterFile_Write(theRegisterFile, true, Rt, RdVal);
 		break;
 		case Non_I_Type:
 		switch(FunctionCode)
@@ -89,8 +90,12 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 			RdVal = RtVal >> RsVal;
 			break;
 			case MFHI:
+			RegisterFile_Read(theRegisterFile, 0b011111, &RsVal, Rt, &RtVal);
+			RdVal = RsVal;
 			break;
 			case MFLO:
+			RegisterFile_Read(theRegisterFile, 0b011110, &RsVal, Rt, &RtVal);
+			RdVal = RsVal;
 			break;
 			case MULT:
 			//Fall through to MULTU since both cases perform the same
@@ -124,8 +129,8 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
 			RdVal = RsVal ^ RtVal;
 			break;
 			case SLT:
-			break;
 			case SLTU:
+			RdVal = (RsVal < RtVal ? 1 : 0);
 			break;
 		}
 		break;
