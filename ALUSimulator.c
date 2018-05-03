@@ -63,15 +63,16 @@ extern void ALUSimulator(RegisterFile theRegisterFile, uint32_t OpCode,
                          uint32_t ShiftAmt, uint32_t FunctionCode,
                          uint32_t ImmediateValue, uint32_t *Status) {
 
-  // Create two pointers that will be used to access the register
+  // Create two integers that will be used to access the register
   uint32_t RsVal = 0;
   uint32_t RtVal = 0;
 
-  // Create an it to hold the value to be written to the register
-  uint32_t RdVal = 0;
-
-  // Access the register at the given addresses
+  // Access the registers at the given addresses by passing pointers to the
+  // above integers
   RegisterFile_Read(theRegisterFile, Rs, &RsVal, Rt, &RtVal);
+
+  // Create an integer to hold the value to be written to the register
+  uint32_t RdVal = 0;
 
   switch (OpCode) {
   case ADDI:
